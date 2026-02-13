@@ -80,10 +80,4 @@ python 102303892.py "<Artist Name>" <N_Videos> <Duration_Sec> <Output_File>
 └── runtime.txt        # Python version specification
 ```
 
-## Repository
 
-**GitHub:** [https://github.com/sakshamverma21/Assignment07---Mashup](https://github.com/sakshamverma21/Assignment07---Mashup)
-
----
-
-*Developed for academic assignment purposes.*
