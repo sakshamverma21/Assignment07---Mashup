@@ -97,69 +97,29 @@ Fill in:
 
 You'll receive the mashup file via email.
 
-## Deployment Options
+## Deploy to Render.com (Free & Easy!)
 
-### Option 1: Render (Recommended - Free Tier Available)
+**Simple 5-Step Deployment:**
 
-1. **Create a `render.yaml` file:**
-```yaml
-services:
-  - type: web
-    name: mashup-generator
-    env: python
-    buildCommand: "pip install -r requirements.txt && apt-get update && apt-get install -y ffmpeg"
-    startCommand: "gunicorn app:app"
-    envVars:
-      - key: SENDER_EMAIL
-        sync: false
-      - key: SENDER_PASSWORD
-        sync: false
-```
+1. **Sign up** at [Render.com](https://render.com) (free, no credit card required)
 
-2. **Add `gunicorn` to requirements.txt**
+2. **Click "New +"** → Select **"Web Service"**
 
-3. **Push to GitHub**
+3. **Connect your GitHub repo** (https://github.com/sakshamverma21/Assignment07---Mashup)
 
-4. **Deploy on Render.com:**
-   - Connect your GitHub repo
-   - Add environment variables
-   - Deploy
+4. **Configure:**
+   - **Name:** `mashup-app` (or any name)
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `gunicorn app:app --timeout 600`
+   - **Instance Type:** Free
 
-### Option 2: PythonAnywhere
+5. **Add Environment Variables:**
+   - `SENDER_EMAIL` = your Gmail address
+   - `SENDER_PASSWORD` = your Gmail App Password
 
-1. Upload your files
-2. Install dependencies in virtual environment
-3. Configure WSGI file
-4. Set environment variables
-5. Reload web app
+Click **"Create Web Service"** - Done! Your app will be live in ~5 minutes. 🚀
 
-**Note:** ffmpeg may not be available on free tier
-
-### Option 3: Railway.app
-
-1. Push to GitHub
-2. Connect to Railway
-3. Add environment variables
-4. Deploy automatically
-
-### Option 4: Heroku
-
-1. Create `Procfile`:
-```
-web: gunicorn app:app
-```
-
-2. Create `runtime.txt`:
-```
-python-3.11.0
-```
-
-3. Add buildpack for ffmpeg:
-```bash
-heroku buildpacks:add --index 1 https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git
-```
-
-4. Deploy via Git
+**Note:** Render automatically installs ffmpeg on all instances.
 
 ## Project Structure
 
