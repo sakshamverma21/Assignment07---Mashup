@@ -97,29 +97,27 @@ Fill in:
 
 You'll receive the mashup file via email.
 
-## Deploy to Render.com (Free & Easy!)
+## Deploy to Railway.app (Free & Easy!)
 
-**Simple 5-Step Deployment:**
+**Simple 4-Step Deployment:**
 
-1. **Sign up** at [Render.com](https://render.com) (free, no credit card required)
+1. **Sign up** at [Railway.app](https://railway.app) (free, GitHub login)
 
-2. **Click "New +"** → Select **"Web Service"**
+2. **Click "New Project"** → **"Deploy from GitHub repo"**
 
-3. **Connect your GitHub repo** (https://github.com/sakshamverma21/Assignment07---Mashup)
+3. **Select your repo:** `sakshamverma21/Assignment07---Mashup`
 
-4. **Configure:**
-   - **Name:** `mashup-app` (or any name)
-   - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** `gunicorn app:app --timeout 600`
-   - **Instance Type:** Free
-
-5. **Add Environment Variables:**
-   - `SENDER_EMAIL` = your Gmail address
+4. **Add Environment Variables** (Settings → Variables):
+   - `SENDER_EMAIL` = your Gmail address  
    - `SENDER_PASSWORD` = your Gmail App Password
 
-Click **"Create Web Service"** - Done! Your app will be live in ~5 minutes. 🚀
+Click **"Deploy"** - Done! Your app will be live in ~3 minutes. 🚀
 
-**Note:** Render automatically installs ffmpeg on all instances.
+**Why Railway?**
+- ✅ Respects Python version from runtime.txt (Python 3.11)
+- ✅ ffmpeg pre-installed
+- ✅ Free tier: 500 hours/month
+- ✅ Auto-deploys on GitHub push
 
 ## Project Structure
 
