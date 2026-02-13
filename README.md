@@ -1,185 +1,89 @@
 # YouTube Mashup Generator
 
-A web application that creates music mashups by downloading YouTube videos, extracting audio, and merging them into a single file.
+**Live Application:** [https://web-production-0be54f.up.railway.app/](https://web-production-0be54f.up.railway.app/)
+
+## Description
+
+A Python-based web application that generates custom music mashups by downloading YouTube videos, extracting audio segments, and merging them into a single output file. The application provides both a web interface and command-line interface, with automatic email delivery of generated mashups.
+
+## Methodology
+
+### 1. Video Search & Download
+- Utilizes `pytubefix` library to search YouTube for videos based on user-specified artist name
+- Downloads the top N videos (where N > 10) matching the search query
+- Extracts audio-only streams to minimize bandwidth and processing time
+
+### 2. Audio Processing
+- Leverages `pydub` library with `ffmpeg` backend for audio manipulation
+- Converts downloaded videos to MP4 format with AAC codec (192kbps bitrate)
+- Extracts the first Y seconds (where Y > 20) from each audio file
+
+### 3. Mashup Creation
+- Concatenates extracted audio segments sequentially
+- Exports final mashup as a single MP4 file with consistent audio quality
+- Implements automatic cleanup of temporary files upon successful completion
+
+### 4. Delivery
+- Packages the mashup file into a ZIP archive
+- Sends via SMTP email to the user-specified address
+- Uses Gmail App Password authentication for secure delivery
 
 ## Features
 
-- Download multiple YouTube videos of any singer
-- Extract and cut audio to specified duration
-- Merge audio clips into a single mashup file
-- Send mashup via email as a ZIP file
-- Web interface and command-line support
+- **Web Interface**: User-friendly Flask-based frontend with form validation
+- **Command-Line Interface**: Direct execution via terminal for automated workflows
+- **Input Validation**: Ensures N > 10 videos and Y > 20 seconds duration
+- **Error Handling**: Comprehensive exception management with detailed logging
+- **Email Delivery**: Automatic ZIP file attachment delivery via Gmail
 
-## Requirements
+## Technology Stack
 
-### System Requirements
-- Python 3.8+
-- ffmpeg (for audio processing)
-
-### Python Dependencies
-See `requirements.txt`:
-- pytubefix
-- pydub
-- flask
-- python-dotenv
+- **Backend**: Python 3.11, Flask
+- **Audio Processing**: pydub, ffmpeg, ffprobe
+- **YouTube Integration**: pytubefix
+- **Deployment**: Railway.app with Gunicorn WSGI server
 
 ## Installation
 
-### 1. Install ffmpeg
-
-**Windows:**
-```powershell
-winget install ffmpeg
-```
-
-**macOS:**
 ```bash
-brew install ffmpeg
-```
-
-**Linux:**
-```bash
-sudo apt-get install ffmpeg  # Ubuntu/Debian
-sudo dnf install ffmpeg      # Fedora
-```
-
-### 2. Install Python Dependencies
-
-```powershell
+# Install dependencies
 pip install -r requirements.txt
+
+# Configure email credentials
+echo "SENDER_EMAIL=your_email@gmail.com" > .env
+echo "SENDER_PASSWORD=your_app_password" >> .env
 ```
-
-### 3. Configure Email (For Web App)
-
-Create a `.env` file in the project root:
-
-```env
-SENDER_EMAIL=your_email@gmail.com
-SENDER_PASSWORD=your_gmail_app_password
-```
-
-**To get Gmail App Password:**
-1. Enable 2-Factor Authentication on your Google account
-2. Visit: https://myaccount.google.com/apppasswords
-3. Generate a new App Password
-4. Use that password in the `.env` file
 
 ## Usage
 
-### Command Line (Program 1)
-
-```powershell
-python 102303892.py "Singer Name" NumberOfVideos Duration OutputFile
-
-# Example:
-python 102303892.py "Arijit Singh" 15 25 output.mp4
-```
-
-**Parameters:**
-- Singer Name: Name of the artist (in quotes)
-- NumberOfVideos: Number of videos to download (must be > 10)
-- Duration: Duration in seconds to cut from each video (must be > 20)
-- OutputFile: Output filename (.mp3 or .mp4)
-
-### Web Application (Program 2)
-
-```powershell
+**Web Application:**
+```bash
 python app.py
+# Access at http://localhost:5000
 ```
 
-Then open your browser to: http://localhost:5000
-
-Fill in:
-- Singer name
-- Number of videos (>10)
-- Duration in seconds (>20)
-- Your email address
-
-You'll receive the mashup file via email.
-
-## Deploy to Railway.app (Free & Easy!)
-
-**Simple 4-Step Deployment:**
-
-1. **Sign up** at [Railway.app](https://railway.app) (free, GitHub login)
-
-2. **Click "New Project"** → **"Deploy from GitHub repo"**
-
-3. **Select your repo:** `sakshamverma21/Assignment07---Mashup`
-
-4. **Add Environment Variables** (Settings → Variables):
-   - `SENDER_EMAIL` = your Gmail address  
-   - `SENDER_PASSWORD` = your Gmail App Password
-
-Click **"Deploy"** - Done! Your app will be live in ~3 minutes. 🚀
-
-**Why Railway?**
-- ✅ Respects Python version from runtime.txt (Python 3.11)
-- ✅ ffmpeg pre-installed
-- ✅ Free tier: 500 hours/month
-- ✅ Auto-deploys on GitHub push
+**Command Line:**
+```bash
+python 102303892.py "<Artist Name>" <N_Videos> <Duration_Sec> <Output_File>
+# Example: python 102303892.py "Arijit Singh" 15 25 mashup.mp4
+```
 
 ## Project Structure
 
 ```
-assignment 7/
-├── app.py                  # Flask web application
-├── 102303892.py           # Command-line program
-├── requirements.txt        # Python dependencies
-├── .env                   # Email configuration (not in git)
-├── .gitignore            # Git ignore file
+├── app.py              # Flask web application
+├── 102303892.py        # Command-line interface
 ├── templates/
-│   └── index.html        # Web interface
-├── temp_mashups/         # Temporary files (auto-cleanup)
-└── README.md            # This file
+│   └── index.html      # Frontend interface
+├── requirements.txt    # Python dependencies
+├── Procfile           # Deployment configuration
+└── runtime.txt        # Python version specification
 ```
 
-## Important Notes
+## Repository
 
-### Security
-- Never commit `.env` file to GitHub
-- Use environment variables for production
-- Generate new App Passwords for each deployment
+**GitHub:** [https://github.com/sakshamverma21/Assignment07---Mashup](https://github.com/sakshamverma21/Assignment07---Mashup)
 
-### File Formats
-- Output format: MP4 (with AAC audio codec)
-- Works with any media player
+---
 
-### Cleanup
-- Successful mashups: temp files auto-deleted
-- Failed mashups: temp files kept for debugging
-
-### Email Configuration
-- The web app requires valid Gmail credentials
-- Must use App Password, not regular password
-- Email configuration is loaded from `.env` file
-
-## Troubleshooting
-
-### "No module named 'pytubefix'"
-```powershell
-pip install pytubefix
-```
-
-### "ffmpeg not found"
-Install ffmpeg as per installation instructions above
-
-### "Email not configured"
-Create `.env` file with your Gmail credentials
-
-### MP4 file won't play
-- Ensure ffmpeg is properly installed
-- Check that output file size > 0 bytes
-- Try VLC media player
-
-## Assignment Requirements
-
-✅ Program 1: Command-line mashup generator  
-✅ Program 2: Web application  
-✅ Email delivery of mashup files  
-✅ Input validation  
-✅ Error handling  
-
-## License
-
-This project is for educational purposes (Assignment submission).
+*Developed for academic assignment purposes.*
