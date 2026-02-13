@@ -3,7 +3,8 @@ pytubefix
 pydub
 flask
 python-dotenv
-gunicorn  # For production deployment
+gunicorn
+pyaudioop  # Fix for Python 3.13+ compatibility with pydub
 
 # IMPORTANT: ffmpeg System Requirement
 # =====================================
