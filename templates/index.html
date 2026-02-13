@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Mashup Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ffffff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .note {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.85em;
+            color: #666;
+        }
+        
+        .note strong {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 Mashup Generator</h1>
+        <p class="subtitle">Create custom YouTube music mashups</p>
+        
+        <form id="mashupForm">
+            <div class="form-group">
+                <label for="singer_name">Singer Name</label>
+                <input 
+                    type="text" 
+                    id="singer_name" 
+                    name="singer_name" 
+                    placeholder="e.g., Sharry Maan"
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="num_videos">Number of Videos (must be > 10)</label>
+                <input 
+                    type="number" 
+                    id="num_videos" 
+                    name="num_videos" 
+                    placeholder="e.g., 20"
+                    min="11"
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="duration">Duration (seconds, must be > 20)</label>
+                <input 
+                    type="number" 
+                    id="duration" 
+                    name="duration" 
+                    placeholder="e.g., 30"
+                    min="21"
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="your.email@example.com"
+                    required
+                >
+            </div>
+            
+            <button type="submit" id="submitBtn">
+                <span id="buttonText">Generate Mashup</span>
+                <div class="spinner" id="spinner"></div>
+            </button>
+        </form>
+        
+        <div id="message" class="message"></div>
+        
+        <div class="note">
+            <strong>Note:</strong> The mashup creation process may take several minutes depending on the number of videos. You will receive an email with the mashup file once it's ready.
+        </div>
+    </div>
+    
+    <script>
+        const form = document.getElementById('mashupForm');
+        const message = document.getElementById('message');
+        const submitBtn = document.getElementById('submitBtn');
+        const buttonText = document.getElementById('buttonText');
+        const spinner = document.getElementById('spinner');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(form);
+            
+            // Validate
+            const numVideos = parseInt(formData.get('num_videos'));
+            const duration = parseInt(formData.get('duration'));
+            
+            if (numVideos <= 10) {
+                showMessage('Number of videos must be greater than 10', 'error');
+                return;
+            }
+            
+            if (duration <= 20) {
+                showMessage('Duration must be greater than 20 seconds', 'error');
+                return;
+            }
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            buttonText.style.display = 'none';
+            spinner.style.display = 'block';
+            message.style.display = 'none';
+            
+            try {
+                const response = await fetch('/create-mashup', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showMessage(data.message, 'success');
+                    form.reset();
+                } else {
+                    showMessage(data.error || 'An error occurred', 'error');
+                }
+            } catch (error) {
+                showMessage('Network error. Please try again.', 'error');
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                buttonText.style.display = 'inline';
+                spinner.style.display = 'none';
+            }
+        });
+        
+        function showMessage(text, type) {
+            message.textContent = text;
+            message.className = 'message ' + type;
+            message.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

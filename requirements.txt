@@ -1,0 +1,29 @@
+# Python dependencies for YouTube Mashup Generator
+pytubefix
+pydub
+flask
+python-dotenv
+gunicorn  # For production deployment
+
+# IMPORTANT: ffmpeg System Requirement
+# =====================================
+# pydub requires ffmpeg to be installed on your system
+# 
+# Installation instructions:
+#
+# Windows:
+#   1. Download from: https://ffmpeg.org/download.html
+#   2. Extract and add to PATH
+#   OR use chocolatey: choco install ffmpeg
+#
+# macOS:
+#   brew install ffmpeg
+#
+# Linux (Ubuntu/Debian):
+#   sudo apt-get install ffmpeg
+#
+# Linux (Fedora):
+#   sudo dnf install ffmpeg
+#
+# Verify installation:
+#   ffmpeg -version
